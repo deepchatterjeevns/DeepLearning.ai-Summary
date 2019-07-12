@@ -132,7 +132,7 @@ Here are the course summary as its given on the course [link](https://www.course
   - `||W|| = Sum(|w[i,j]|)  # sum of absolute values of all w`
 - L2 matrix norm because of arcane technical math reasons is called Frobenius norm:
   - `||W||^2 = Sum(|w[i,j]|^2)	# sum of all w squared`
-  - Also can be calculated as `||W||^2 = W.T * W`
+  - Also can be calculated as `||W||^2 = W.T * W if W is a vector`
 - Regularization for logistic regression:
   - The normal cost function that we want to minimize is: `J(w,b) = (1/m) * Sum(L(y(i),y'(i)))`
   - The L2 regularization version: `J(w,b) = (1/m) * Sum(L(y(i),y'(i))) + (lambda/2m) * Sum(|w[i]|^2)`
@@ -312,7 +312,7 @@ _**Implementation tip**_: if you implement gradient descent, one of the steps to
 - Implementation of this is very simple.
 - Gradient checking:
   - First take `W[1],b[1],...,W[L],b[L]` and reshape into one big vector (`theta`)
-  - The cost function will be `L(theta)`
+  - The cost function will be `J(theta)`
   - Then take `dW[1],db[1],...,dW[L],db[L]` into one big vector (`d_theta`)
   - **Algorithm**:   
     ```
@@ -337,9 +337,9 @@ _**Implementation tip**_: if you implement gradient descent, one of the steps to
 
 ### Initialization summary
 
-- The weights $W^{[l]}$ should be initialized randomly to break symmetry
+- The weights W<sup>[l]</sup> should be initialized randomly to break symmetry
 
-- It is however okay to initialize the biases $b^{[l]}$ to zeros. Symmetry is still broken so long as $W^{[l]}$ is initialized randomly
+- It is however okay to initialize the biases b<sup>[l]</sup> to zeros. Symmetry is still broken so long as W<sup>[l]</sup> is initialized randomly
 
 - Different initializations lead to different results
 
@@ -656,13 +656,13 @@ Implications of L2-regularization on:
   - Given `Z[l] = [z(1), ..., z(m)]`, i = 1 to m (for each input)
   - Compute `mean = 1/m * sum(z[i])`
   - Compute `variance = 1/m * sum((z[i] - mean)^2)`
-  - Then `Z_norm[i] = (z(i) - mean) / np.sqrt(variance + epsilon)` (add `epsilon` for numerical stability if variance = 0)
+  - Then `Z_norm[i] = (z[i] - mean) / np.sqrt(variance + epsilon)` (add `epsilon` for numerical stability if variance = 0)
     - Forcing the inputs to a distribution with zero mean and variance of 1.
   - Then `Z_tilde[i] = gamma * Z_norm[i] + beta`
     - To make inputs belong to other distribution (with other mean and variance).
     - gamma and beta are learnable parameters of the model.
     - Making the NN learn the distribution of the outputs.
-    - _Note:_ if `gamma = sqrt(variance + epsilon)` and `beta = mean` then `Z_tilde[i] = Z_norm[i]`
+    - _Note:_ if `gamma = sqrt(variance + epsilon)` and `beta = mean` then `Z_tilde[i] = z[i]`
 
 ### Fitting Batch Normalization into a neural network
 

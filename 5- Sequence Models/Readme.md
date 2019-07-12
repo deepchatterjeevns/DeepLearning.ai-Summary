@@ -161,8 +161,8 @@ Here are the course summary as its given on the course [link](https://www.course
 - In order to help us develop complex RNN architectures, the last equations needs to be simplified a bit.
 - **Simplified RNN notation**:   
     ![](Images/05.png)
-  - w<sub>a</sub> is w<sub>aa</sub> and w<sub>ax</sub> stacked horizontaly.
-  - [a<sup>\<t-1></sup>, x<sup>\<t></sup>] is a<sup>\<t-1></sup> and x<sup>\<t></sup> stacked verticaly.
+  - w<sub>a</sub> is w<sub>aa</sub> and w<sub>ax</sub> stacked horizontally.
+  - [a<sup>\<t-1></sup>, x<sup>\<t></sup>] is a<sup>\<t-1></sup> and x<sup>\<t></sup> stacked vertically.
   - w<sub>a</sub> shape: (NoOfHiddenNeurons, NoOfHiddenNeurons + n<sub>x</sub>)
   - [a<sup>\<t-1></sup>, x<sup>\<t></sup>] shape: (NoOfHiddenNeurons + n<sub>x</sub>, 1)
 
@@ -459,7 +459,7 @@ Here are the course summary as its given on the course [link](https://www.course
 - Cosine similarity - the most commonly used similarity function:
   - Equation:   
     ![](Images/35.png)
-    - $$\text{CosineSimilarity(u, v)} = \frac {u . v} {||u||_2 ||v||_2} = cos(\theta)$$
+    - `CosineSimilarity(u, v)` = `u . v` / `||u|| ||v||` = cos(&theta;)
     - The top part represents the inner product of `u` and `v` vectors. It will be large if the vectors are very similar.
 - You can also use Euclidean distance as a similarity function (but it rather measures a dissimilarity, so you should take it with negative sign).
 - We can use this equation to calculate the similarities between word embeddings and on the analogy problem where `u` = e<sub>w</sub> and `v` = e<sub>king</sub> - e<sub>man</sub> + e<sub>woman</sub>
@@ -544,7 +544,7 @@ Here are the course summary as its given on the course [link](https://www.course
   - One way is to choose the context by random from your corpus.
   - If you have done it that way, there will be frequent words like "the, of, a, and, to, .." that can dominate other words like "orange, apple, durian,..."
   - In practice, we don't take the context uniformly random, instead there are some heuristics to balance the common words and the non-common words.
-- word2vec paper includes 2 ideas of learning word embeddings. One is skip-gram model and another is CBoW (continious bag-of-words).
+- word2vec paper includes 2 ideas of learning word embeddings. One is skip-gram model and another is CBoW (continuous bag-of-words).
 
 #### Negative Sampling
 - Negative sampling allows you to do something similar to the skip-gram model, but with a much more efficient learning algorithm. We will create a different learning problem.
@@ -688,7 +688,7 @@ Here are the course summary as its given on the course [link](https://www.course
 
 #### Picking the most likely sentence
 - There are some similarities between the language model we have learned previously, and the machine translation model we have just discussed, but there are some differences as well.
-- The language model we have learned is very similar to the decoder part of the machined translation model, except for a<sup>\<0></sup>   
+- The language model we have learned is very similar to the decoder part of the machine translation model, except for a<sup>\<0></sup>   
   ![](Images/55.png)
 - Problems formulations also are different:
   - In language model: P(y<sup>\<1></sup>, ..., y<sup>\<Ty></sup>)
@@ -799,7 +799,7 @@ Here are the course summary as its given on the course [link](https://www.course
     | **Totals** | 6     | 4          |
 
     Modified precision = sum(Count clip) / sum(Count) = 4/6
-- So here are the equations for modified presicion for the n-grams case:   
+- So here are the equations for modified precision for the n-grams case:   
   ![](Images/60.png)
 - Let's put this together to formalize the BLEU score:
   - **P<sub>n</sub>** = Bleu score on one type of n-gram
@@ -886,7 +886,7 @@ Here are the course summary as its given on the course [link](https://www.course
   - To explain this let's say that Y = "the quick brown fox"
   - We are going to use an RNN with input, output structure:   
     ![](Images/78.png)
-  - Note: this is a unidirectional RNN, but it practice a bidirectional RNN is used.
+  - Note: this is a unidirectional RNN, but in practice a bidirectional RNN is used.
   - Notice, that the number of inputs and number of outputs are the same here, but in speech recognition problem input X tends to be a lot larger than output Y.
     - 10 seconds of audio at 100Hz gives us X with shape (1000, ). These 10 seconds don't contain 1000 character outputs.
   - The CTC cost function allows the RNN to output something like this:
@@ -926,11 +926,11 @@ Here are the course summary as its given on the course [link](https://www.course
 - The model is built with keras layers.
 - The attention model.   
   ![](Images/83.png)
-  - There are two separate LSTMs in this model. Because the one at the bottom of the picture is a Bi-directional LSTM and comes *before* the attention mechanism, we will call it *pre-attention* Bi-LSTM. The LSTM at the top of the diagram comes *after* the attention mechanism, so we will call it the *post-attention* LSTM. The pre-attention Bi-LSTM goes through $T_x$ time steps; the post-attention LSTM goes through $T_y$ time steps. 
-  - The post-attention LSTM passes $s^{\langle t \rangle}, c^{\langle t \rangle}$ from one time step to the next. In the lecture videos, we were using only a basic RNN for the post-activation sequence model, so the state captured by the RNN output activations $s^{\langle t\rangle}$. But since we are using an LSTM here, the LSTM has both the output activation $s^{\langle t\rangle}$ and the hidden cell state $c^{\langle t\rangle}$. However, unlike previous text generation examples (such as Dinosaurus in week 1), in this model the post-activation LSTM at time $t$ does will not take the specific generated $y^{\langle t-1 \rangle}$ as input; it only takes $s^{\langle t\rangle}$ and $c^{\langle t\rangle}$ as input. We have designed the model this way, because (unlike language generation where adjacent characters are highly correlated) there isn't as strong a dependency between the previous character and the next character in a YYYY-MM-DD date. 
-- What one "Attention" step does to calculate the attention variables $\alpha^{\langle t, t' \rangle}$, which are used to compute the context variable $context^{\langle t \rangle}$ for each timestep in the output ($t=1, \ldots, T_y$).   
+  - There are two separate LSTMs in this model. Because the one at the bottom of the picture is a Bi-directional LSTM and comes *before* the attention mechanism, we will call it *pre-attention* Bi-LSTM. The LSTM at the top of the diagram comes *after* the attention mechanism, so we will call it the *post-attention* LSTM. The pre-attention Bi-LSTM goes through T<sub>x</sub> time steps; the post-attention LSTM goes through T<sub>y</sub> time steps.
+  - The post-attention LSTM passes s<sup>`<t>`</sup>, c<sup>`<t>`</sup> from one time step to the next. In the lecture videos, we were using only a basic RNN for the post-activation sequence model, so the state captured by the RNN output activations s<sup>`<t>`</sup>. But since we are using an LSTM here, the LSTM has both the output activation s<sup>`<t>`</sup> and the hidden cell state c<sup>`<t>`</sup>. However, unlike previous text generation examples (such as Dinosaurus in week 1), in this model the post-activation LSTM at time `t` does will not take the specific generated y<sup>`<t-1>`</sup> as input; it only takes s<sup>`<t>`</sup> and c<sup>`<t>`</sup> as input. We have designed the model this way, because (unlike language generation where adjacent characters are highly correlated) there isn't as strong a dependency between the previous character and the next character in a YYYY-MM-DD date.
+- What one "Attention" step does to calculate the attention variables &alpha;<sup>`<t, t>`</sup>, which are used to compute the context variable context<sup>`<t>`</sup> for each timestep in the output (t=1, ..., T<sub>y</sub>).
   ![](Images/84.png)
-  - The diagram uses a `RepeatVector` node to copy $s^{\langle t-1 \rangle}$'s value $T_x$ times, and then `Concatenation` to concatenate $s^{\langle t-1 \rangle}$ and $a^{\langle t \rangle}$ to compute $e^{\langle t, t'}$, which is then passed through a softmax to compute $\alpha^{\langle t, t' \rangle}$. 
+  - The diagram uses a `RepeatVector` node to copy s<sup>`<t-1>`</sup>'s value T<sub>x</sub> times, and then `Concatenation` to concatenate s<sup>`<t-1>`</sup> and a<sup>`<t>`</sup> to compute e<sup>`<t, t>`</sup>, which is then passed through a softmax to compute &alpha;<sup>`<t, t>`</sup>.
 
 
 
